@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Feito com carinho❤️</title>
+
+<style>
+  body {
+    margin: 0;
+    background: black;
+    color: #ff4d6d;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    /* REMOVIDO align-items: center */
+    min-height: 100vh;
+    padding-top: 40px; /* espaço pro título aparecer */
+  }
+
+  .container {
+    text-align: center;
+    max-width: 500px;
+    width: 92%;
+    padding: 15px;
+    z-index: 1;
+  }
+
+  h1 {
+    color: #ff1a5f;
+    text-shadow: 0 0 10px #ff1944, 0 0 20px #ff0000;
+    margin-bottom: 20px;
+    font-size: 7vw;
+  }
+
+  audio {
+    width: 100%;
+    margin-bottom: 25px;
+  }
+
+  #letras {
+    line-height: 1.8;
+  }
+
+  .linha {
+    font-size: 5.5vw;
+    margin: 10px 0;
+    opacity: 0.5;
+    transition: 0.3s;
+    color: #ff99aa;
+  }
+
+  .ativa {
+    font-size: 6.5vw;
+    opacity: 1;
+    font-weight: bold;
+    color: #ff3366;
+    text-shadow: 0 0 10px #ff3366, 0 0 25px #ff6699;
+  }
+
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+
+  @media (min-width: 390px) {
+    .linha {
+      font-size: 22px;
+    }
+
+    .ativa {
+      font-size: 26px;
+    }
+
+    h1 {
+      font-size: 28px;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Para o meu amor💕</h1>
+
+  <audio id="audio" controls>
+    <source src="musica.mp3" type="audio/mpeg">
+  </audio>
+
+  <div id="letras"></div>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+const lrc = [
+  { time: 0, text: "Você é assim," },
+  { time: 3, text: "Um sonho pra mim," },
+  { time: 5.5, text: "E quando eu não te vejo," },
+  { time: 9, text: "Eu penso em você..." },
+
+  { time: 11.5, text: "Desde o amanhecer," },
+  { time: 14, text: "Até quando eu me deito," },
+  { time: 18, text: "Eu gosto de você," },
+  { time: 22, text: "E gosto de ficar com você..." },
+
+  { time: 27, text: "Meu riso é tão feliz contigo," },
+  { time: 31, text: "O meu melhor amigo é o meu amor..." },
+
+  { time: 35, text: "E a gente canta," },
+  { time: 37.5, text: "E a gente dança," },
+  { time: 39.3, text: "E a gente não se cansa," },
+  { time: 43.4, text: "De ser criança..." },
+
+  { time: 45, text: "EU TE AMO MARIA EDUARDA MEU AMOR, ME DESCULPA💖" }
+];
+
+const audio = document.getElementById("audio");
+const letrasDiv = document.getElementById("letras");
+
+lrc.forEach((linha) => {
+  const div = document.createElement("div");
+  div.classList.add("linha");
+  div.innerText = linha.text;
+  letrasDiv.appendChild(div);
+});
+
+const linhasHTML = document.querySelectorAll(".linha");
+
+audio.ontimeupdate = () => {
+  let currentTime = audio.currentTime;
+
+  for (let i = 0; i < lrc.length; i++) {
+    if (currentTime >= lrc[i].time && (!lrc[i+1] || currentTime < lrc[i+1].time)) {
+      linhasHTML.forEach(l => l.classList.remove("ativa"));
+      linhasHTML[i].classList.add("ativa");
+    }
+  }
+};
+
+// 💕 corações
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.onresize = resizeCanvas;
+
+let hearts = [];
+
+function createHeart() {
+  hearts.push({
+    x: Math.random() * canvas.width,
+    y: canvas.height,
+    size: Math.random() * 20 + 10,
+    speed: Math.random() * 2 + 1
+  });
+}
+
+function draw() {
+  requestAnimationFrame(draw);
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (Math.random() < 0.1) createHeart();
+
+  hearts.forEach((h, i) => {
+    ctx.font = h.size + "px Arial";
+    ctx.fillStyle = "#ff4d6d";
+    ctx.fillText("💖", h.x, h.y);
+
+    h.y -= h.speed;
+
+    if (h.y < 0) hearts.splice(i, 1);
+  });
+}
+
+draw();
+</script>
+
+</body>
+</html>
